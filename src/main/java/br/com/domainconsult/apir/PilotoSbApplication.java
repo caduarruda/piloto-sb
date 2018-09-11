@@ -8,5 +8,6 @@ public class PilotoSbApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PilotoSbApplication.class, args);
+		System.out.println("Meu primeiro projeto");
 	}
 }
