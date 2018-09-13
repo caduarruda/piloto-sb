@@ -38,4 +38,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return employeeDaoImpl.addEmployee(employee);
 	}
 
+	public Employee getByIdEmployee(Long id) {
+		return employeeDaoImpl.getByIdEmployee(id);
+	}
+	
+	public boolean DeleteEmployee(Long id) {
+		return employeeDaoImpl.DeleteEmployee(id);
+	}
+
+	
 }
