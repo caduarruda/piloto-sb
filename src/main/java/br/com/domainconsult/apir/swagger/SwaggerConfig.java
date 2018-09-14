@@ -1,8 +1,10 @@
 package br.com.domainconsult.apir.swagger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import br.com.domainconsult.apir.components.Messages;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,6 +17,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
+	@Autowired
+    Messages messages;
+	
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
@@ -24,9 +29,9 @@ public class SwaggerConfig {
 
 	private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Multiplus - Documentação de API (Swagger)")
-            .description("Detalhamento de API Rest.")
-            .version("1.0")
+            .title(messages.get("swagger.titulo"))
+            .description(messages.get("swagger.descricao"))
+            .version(messages.get("swagger.versao"))
             .build();
     }
 }
