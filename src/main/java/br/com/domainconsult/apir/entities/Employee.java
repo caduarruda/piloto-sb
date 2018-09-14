@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Table(name="employee",schema="devsoa")
 
@@ -44,6 +47,8 @@ public class Employee implements Serializable{
 		this.empid = empid;
 	}
 
+	@NotEmpty(message = "{employee.empname.notempty}")
+	@Length(min = 5, max = 200, message = "{employee.empname.length}")
 	public String getEmpname() {
 		return empname;
 	}

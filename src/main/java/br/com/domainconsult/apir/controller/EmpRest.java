@@ -2,25 +2,34 @@ package br.com.domainconsult.apir.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
 import br.com.domainconsult.apir.entities.Employee;
+import br.com.domainconsult.apir.errorhandling.ValidationError;
+import br.com.domainconsult.apir.errorhandling.ValidationErrorBuilder;
 import br.com.domainconsult.apir.services.EmployeeService;
 
 @RestController
@@ -54,12 +63,14 @@ public class EmpRest {
 	}
 	
 	@PostMapping(value="/novofunc")
-	public @ResponseBody String saveEmployee(@RequestBody Employee employee){
+	public @ResponseBody String saveEmployee(@Valid @RequestBody Employee employee){
 		boolean getresponse=false;
+
 		String jsonEmployee="";
 		try{
 			getresponse = employeeServiceImpl.addEmployee(employee);
 			jsonEmployee=getresponse==true?"1":"0";
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -80,4 +91,14 @@ public class EmpRest {
 	   return employeeServiceImpl.getByIdEmployee(new Long(id));
 	}
 
+	// Tratamento das mensagens de erro do controller (utilizando as classes do pacote errorhandling)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ValidationError handleException(MethodArgumentNotValidException exception) {
+        return createValidationError(exception);
+    }
+
+    private ValidationError createValidationError(MethodArgumentNotValidException exception) {
+        return ValidationErrorBuilder.fromBindingErrors(exception.getBindingResult());
+    }
 }
