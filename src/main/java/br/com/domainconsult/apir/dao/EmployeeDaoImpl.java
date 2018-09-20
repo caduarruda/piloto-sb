@@ -22,7 +22,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
     private EntityManager entityManger;
 
 	public List<Employee> getListEmployee() {
-		return entityManger.createQuery("select e from Employee e", Employee.class).getResultList();
+		return entityManger.createQuery("select e from Employee e order by e.empid", Employee.class).getResultList();
 	}
 
 	public boolean addEmployee(Employee employee) {

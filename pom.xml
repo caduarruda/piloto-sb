@@ -5,8 +5,8 @@
 
 	<groupId>br.com.domainconsult</groupId>
 	<artifactId>piloto-sb</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<version>v1</version>
+	<packaging>war</packaging>
 
 	<name>PilotoSB</name>
 	<description>Piloto Spring Boot</description>
